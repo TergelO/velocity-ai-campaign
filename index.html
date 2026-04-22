@@ -119,7 +119,7 @@
     gap: 12px;
   }
   .hero-logo-nav img {
-    height: 44px;
+    height: 80px;
     width: auto;
     display: block;
   }
@@ -884,7 +884,7 @@
     gap: 12px;
     margin-bottom: 16px;
   }
-  footer .footer-logo img { height: 40px; width: auto; }
+  footer .footer-logo img { height: 64px; width: auto; }
   footer .tagline {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -1234,6 +1234,177 @@
     .team-chapter { padding: 64px 24px; }
   }
 
+
+  /* Secondary CTA row for proposal buttons */
+  .hero-proposal-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(244,239,230,0.15);
+  }
+  .hero-proposal-row .proposal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.5);
+    margin-right: 8px;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--bone);
+    padding: 12px 20px;
+    border: 1px solid rgba(244,239,230,0.3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--volt);
+    color: var(--volt);
+  }
+  .btn-ghost svg { width: 14px; height: 14px; }
+
+  /* ============ MISSION ============ */
+  .mission-chapter {
+    padding: 80px 40px;
+    background: var(--bone);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mission-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .mission-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blood);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .mission-body p {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .mission-body p em {
+    font-style: italic;
+    position: relative;
+  }
+  .mission-body p em::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 10px;
+    background: var(--volt);
+    z-index: -1;
+    opacity: 0.6;
+  }
+  .mission-body .mission-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 20px;
+  }
+
+  /* ============ REFERENCES ============ */
+  .references-chapter {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 100px 40px;
+  }
+  .references-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .references-chapter .chapter-label { color: var(--volt); }
+  .references-chapter .chapter-label::before { background: var(--volt); }
+  .references-chapter h2.chapter-title {
+    color: var(--bone);
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 24px;
+  }
+  .references-intro {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: rgba(244,239,230,0.65);
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+  .references-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 48px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: ref;
+  }
+  .references-list li {
+    padding: 20px 0 20px 44px;
+    border-top: 1px solid rgba(244,239,230,0.15);
+    position: relative;
+    counter-increment: ref;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(244,239,230,0.85);
+  }
+  .references-list li::before {
+    content: counter(ref, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--volt);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .references-list li a {
+    color: var(--volt);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212,255,58,0.3);
+    transition: border-color 0.2s;
+    word-break: break-word;
+  }
+  .references-list li a:hover { border-color: var(--volt); }
+  .references-list .author { font-weight: 600; color: var(--bone); }
+  .references-list .title { font-style: italic; }
+
+  @media (max-width: 900px) {
+    .mission-inner { grid-template-columns: 1fr; gap: 20px; }
+    .mission-tag { writing-mode: horizontal-tb; transform: none; }
+    .references-list { grid-template-columns: 1fr; gap: 0; }
+    .references-chapter, .mission-chapter { padding: 64px 24px; }
+  }
+
 </style>
 </head>
 <body>
@@ -1279,6 +1450,18 @@
         <button class="btn-primary" onclick="document.getElementById('rewards').scrollIntoView()">Back Velocity AI →</button>
         <button class="btn-secondary" onclick="document.getElementById('story').scrollIntoView()">How It Works</button>
       </div>
+
+      <div class="hero-proposal-row">
+        <span class="proposal-label">The Formal Proposal •</span>
+        <a class="btn-ghost" href="https://docs.google.com/presentation/d/YOUR_SLIDES_ID_HERE/edit" target="_blank" rel="noopener">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 15l-4-4h3V9h2v5h3l-4 4zm7-11V5h1v2h-1z"/><path d="M12 10h-1v4h1v-4z" fill="none"/></svg>
+          View Deck Online
+        </a>
+        <a class="btn-ghost" href="velocity-ai-deck.pptx" download>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Download .pptx
+        </a>
+      </div>
     </div>
 
     <aside class="fund-card">
@@ -1298,6 +1481,20 @@
     </aside>
   </div>
 </header>
+
+<!-- MISSION STATEMENT -->
+<section class="mission-chapter">
+  <div class="mission-inner">
+    <div class="mission-tag">Our Mission</div>
+    <div class="mission-body">
+      <div class="mission-kicker">Chapter 00 / The Mission</div>
+      <p>
+        To put <em>pro-grade sports analytics</em> in the hands of every coach, athlete, and analyst — not just the franchises who can afford a data-science department. We believe the edge that decides games should be available at every level of the game.
+      </p>
+    </div>
+  </div>
+</section>
+
 
 <!-- CHAPTER 1: PROBLEM -->
 <section class="chapter" id="story">
@@ -1671,6 +1868,45 @@
 </section>
 
 <!-- FOOTER -->
+
+<!-- REFERENCES -->
+<section class="references-chapter">
+  <div class="references-inner">
+    <div class="chapter-label">Chapter 08 / References</div>
+    <h2 class="chapter-title">The research behind the pitch.</h2>
+    <p class="references-intro">
+      Every claim on this page is grounded in peer-reviewed research or recognized industry reporting. Sources are listed below in APA format — click any link to read the original.
+    </p>
+
+    <ol class="references-list">
+      <li>
+        <span class="author">Bartlett, R.</span> (2006, December 15). <span class="title">Artificial Intelligence in sports biomechanics: New dawn or false hope?</span> <em>Journal of Sports Science &amp; Medicine.</em>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3861744/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC3861744</a>
+      </li>
+      <li>
+        <span class="author">Zhou, D.</span> (n.d.). <span class="title">Artificial Intelligence in sport: A narrative review of applications, challenges and future trends.</span> <em>Journal of Sports Sciences</em>, Vol 0, No. 0. Taylor &amp; Francis.
+        <a href="https://www.tandfonline.com/doi/abs/10.1080/02640414.2025.2518694" target="_blank" rel="noopener">tandfonline.com/doi/abs/10.1080/02640414.2025.2518694</a>
+      </li>
+      <li>
+        <span class="author">Hammes, F., Hagg, A., Asteroth, A., &amp; Link, D.</span> (2026, February 27). <span class="title">Artificial Intelligence in elite sports — A narrative review of success stories and challenges.</span> <em>Frontiers.</em>
+        <a href="https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2022.861466/full" target="_blank" rel="noopener">frontiersin.org/…/fspor.2022.861466/full</a>
+      </li>
+      <li>
+        <span class="author">Pietraszewski, P., Terbalyan, A., Roczniok, R., Maszczyk, A., Ornowski, K., Manilewska, D., Kuliś, S., Zając, A., &amp; Golaś, A.</span> (2025, June 27). <span class="title">The role of Artificial Intelligence in Sports Analytics: A systematic review and meta-analysis of performance trends.</span> <em>MDPI.</em>
+        <a href="https://www.mdpi.com/2076-3417/15/13/7254" target="_blank" rel="noopener">mdpi.com/2076-3417/15/13/7254</a>
+      </li>
+      <li>
+        <span class="author">Pisaniello, A.</span> (2024, November 6). <span class="title">The game changer: How artificial intelligence is…</span> <em>Paradigm.</em>
+        <a href="https://reference-global.com/article/10.2478/gssfj-2024-0006" target="_blank" rel="noopener">reference-global.com/article/10.2478/gssfj-2024-0006</a>
+      </li>
+      <li>
+        <span class="author">Grand View Research.</span> (2025). <span class="title">Sports analytics market size &amp; share industry report, 2033.</span>
+        <a href="https://www.grandviewresearch.com/industry-analysis/sports-analytics-market" target="_blank" rel="noopener">grandviewresearch.com/industry-analysis/sports-analytics-market</a>
+      </li>
+    </ol>
+  </div>
+</section>
+
 <footer>
   <div class="footer-inner">
     <div>
@@ -1702,7 +1938,7 @@
     </div>
   </div>
   <div class="bottom">
-    <div>© 2026 Velocity AI · Founded by Numair Huq</div>
+    <div>© 2026 Velocity AI · Tergel · Numair · Paul · Carmen</div>
     <div>Campaign active · 18 days remaining</div>
   </div>
 </footer>
