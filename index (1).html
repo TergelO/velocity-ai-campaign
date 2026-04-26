@@ -1,0 +1,2150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Velocity AI — The AI Sports Analytics Platform Built for Every Athlete</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@400;600&family=Archivo:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0a1628;
+    --ink-2: #102238;
+    --bone: #f4efe6;
+    --bone-2: #ebe4d5;
+    --volt: #d4ff3a;
+    --volt-dark: #a8cc2e;
+    --blood: #c1272d;
+    --rule: rgba(10, 22, 40, 0.14);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Archivo', sans-serif;
+    background: var(--bone);
+    color: var(--ink);
+    line-height: 1.5;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.08;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ============ TICKER ============ */
+  .ticker {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 10px 0;
+    border-bottom: 1px solid var(--volt);
+    overflow: hidden;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 48px;
+    white-space: nowrap;
+    animation: scroll 40s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 10px; }
+  .ticker-track .dot { width: 6px; height: 6px; background: var(--volt); border-radius: 50%; display: inline-block; }
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 40px 40px 80px;
+    position: relative;
+    overflow: hidden;
+    border-bottom: 2px solid var(--volt);
+  }
+
+  .hero-grid-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(212,255,58,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(212,255,58,0.06) 1px, transparent 1px);
+    background-size: 48px 48px;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 75%);
+  }
+
+  .hero-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 40px;
+    align-items: start;
+  }
+
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    grid-column: 1 / -1;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(244,239,230,0.2);
+    margin-bottom: 48px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.6);
+  }
+  .hero-logo-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-logo-nav img {
+    height: 80px;
+    width: auto;
+    display: block;
+  }
+
+  .hero-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--volt);
+    margin-bottom: 24px;
+    padding: 6px 12px;
+    border: 1px solid var(--volt);
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(52px, 8vw, 120px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--volt);
+  }
+  .hero h1 .underline {
+    position: relative;
+    display: inline-block;
+  }
+  .hero h1 .underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 8px;
+    width: 100%;
+    height: 10px;
+    background: var(--volt);
+    z-index: -1;
+    opacity: 0.5;
+  }
+
+  .hero-lede {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(18px, 2vw, 24px);
+    line-height: 1.45;
+    max-width: 640px;
+    color: rgba(244,239,230,0.85);
+    margin-bottom: 48px;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--volt);
+    color: var(--ink);
+    padding: 18px 32px;
+    border: none;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 6px 6px 0 var(--bone);
+  }
+  .btn-primary:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0 var(--bone);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--bone);
+    padding: 18px 28px;
+    border: 1px solid rgba(244,239,230,0.4);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--volt);
+    color: var(--volt);
+  }
+
+  /* Fund card */
+  .fund-card {
+    background: var(--bone);
+    color: var(--ink);
+    padding: 32px;
+    width: 340px;
+    position: relative;
+    transform: rotate(1.2deg);
+    box-shadow: 12px 12px 0 var(--volt);
+  }
+  .fund-card::before {
+    content: "";
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    right: -12px;
+    bottom: -12px;
+    border: 1px dashed rgba(244,239,230,0.3);
+    z-index: -1;
+  }
+  .fund-card .raised {
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .fund-card .raised span { color: var(--blood); }
+  .fund-card .goal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(10,22,40,0.6);
+    margin-top: 8px;
+  }
+  .fund-card .progress {
+    height: 8px;
+    background: rgba(10,22,40,0.08);
+    margin: 20px 0 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .fund-card .progress-fill {
+    height: 100%;
+    width: 72%;
+    background: var(--ink);
+    position: relative;
+  }
+  .fund-card .progress-fill::after {
+    content: "";
+    position: absolute;
+    right: -4px;
+    top: -2px;
+    width: 12px;
+    height: 12px;
+    background: var(--volt);
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+  .fund-card-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .fund-card-stats .stat-num {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .fund-card-stats .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(10,22,40,0.6);
+    margin-top: 6px;
+  }
+
+  /* ============ SECTION FRAMES ============ */
+  section.chapter {
+    padding: 100px 40px;
+    max-width: 1280px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .chapter-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  .chapter-label::before {
+    content: "";
+    width: 40px;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  h2.chapter-title {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin-bottom: 48px;
+    max-width: 900px;
+  }
+  h2.chapter-title em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ============ PROBLEM ============ */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+  .problem-lede {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    line-height: 1.5;
+    font-style: italic;
+    padding-left: 24px;
+    border-left: 3px solid var(--blood);
+    margin-bottom: 32px;
+  }
+  .problem-body p {
+    margin-bottom: 20px;
+    font-size: 17px;
+    line-height: 1.65;
+    color: rgba(10,22,40,0.85);
+  }
+  .problem-body p .highlight {
+    background: linear-gradient(transparent 60%, var(--volt) 60%);
+    padding: 0 2px;
+  }
+
+  .problem-callouts {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: sticky;
+    top: 80px;
+  }
+  .callout {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 28px;
+    position: relative;
+  }
+  .callout:nth-child(2) { margin-left: 32px; }
+  .callout:nth-child(3) { margin-left: 16px; }
+  .callout .num {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 64px;
+    line-height: 1;
+    color: var(--volt);
+    letter-spacing: -0.03em;
+  }
+  .callout .num .unit { font-size: 28px; }
+  .callout .desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 12px;
+    opacity: 0.85;
+  }
+
+  /* ============ MARKET ============ */
+  .market-chapter {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 120px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .market-chapter .chapter-label { color: var(--volt); }
+  .market-chapter .chapter-label::before { background: var(--volt); }
+  .market-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .market-chapter h2.chapter-title { color: var(--bone); }
+
+  .market-intro p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: rgba(244,239,230,0.85);
+    margin-bottom: 20px;
+  }
+  .market-intro .giant-number {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 120px;
+    line-height: 0.9;
+    color: var(--volt);
+    letter-spacing: -0.04em;
+    margin: 40px 0 16px;
+  }
+  .market-intro .giant-number sup {
+    font-size: 32px;
+    vertical-align: top;
+    margin-top: 20px;
+    display: inline-block;
+  }
+  .market-intro .giant-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.6);
+  }
+
+  .chart-card {
+    background: var(--bone);
+    color: var(--ink);
+    padding: 40px;
+    position: relative;
+  }
+  .chart-card .fig-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(10,22,40,0.5);
+    margin-bottom: 8px;
+  }
+  .chart-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    line-height: 1.3;
+  }
+  .chart-svg { width: 100%; height: auto; }
+
+  /* ============ FEATURES / APPROACH ============ */
+  .approach-chapter { padding-top: 120px; }
+
+  .approach-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .approach-card {
+    background: var(--bone-2);
+    padding: 32px;
+    position: relative;
+    border: 1px solid var(--rule);
+    transition: all 0.3s ease;
+  }
+  .approach-card:hover {
+    background: var(--ink);
+    color: var(--bone);
+    transform: translateY(-4px);
+  }
+  .approach-card:hover .step-num { color: var(--volt); }
+  .approach-card .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--blood);
+    margin-bottom: 16px;
+    display: block;
+  }
+  .approach-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .approach-card p {
+    font-size: 15px;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
+
+  .approach-card.wide { grid-column: span 6; }
+  .approach-card.medium { grid-column: span 4; }
+  .approach-card.large { grid-column: span 8; }
+
+  /* Data types table */
+  .data-table-wrap {
+    margin-top: 100px;
+    background: var(--ink);
+    color: var(--bone);
+    padding: 48px;
+    position: relative;
+  }
+  .data-table-wrap::before {
+    content: "FIG. 03";
+    position: absolute;
+    top: 24px;
+    right: 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--volt);
+  }
+  .data-table-wrap h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 32px;
+    max-width: 700px;
+  }
+  table.data-types {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+  }
+  table.data-types th {
+    text-align: left;
+    padding: 16px 20px 16px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--volt);
+    border-bottom: 1px solid rgba(244,239,230,0.2);
+  }
+  table.data-types td {
+    padding: 20px 20px 20px 0;
+    border-bottom: 1px solid rgba(244,239,230,0.1);
+    vertical-align: top;
+  }
+  table.data-types tr:last-child td { border-bottom: none; }
+  table.data-types td:first-child {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  table.data-types td:nth-child(2) {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: rgba(244,239,230,0.7);
+  }
+
+  /* ============ HONEST ============ */
+  .honest-chapter {
+    background: var(--bone-2);
+    padding: 120px 40px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .honest-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .honest-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    margin-top: 64px;
+  }
+  .honest-card {
+    border-top: 3px solid var(--blood);
+    padding-top: 24px;
+  }
+  .honest-card .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--blood);
+    margin-bottom: 12px;
+  }
+  .honest-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1.2;
+    margin-bottom: 16px;
+  }
+  .honest-card p {
+    font-size: 15px;
+    line-height: 1.65;
+    color: rgba(10,22,40,0.8);
+  }
+
+  /* ============ REWARDS ============ */
+  .rewards-chapter { padding: 120px 40px; }
+  .rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+  .tier {
+    background: var(--bone);
+    border: 1px solid var(--ink);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    transition: all 0.25s ease;
+  }
+  .tier:hover { transform: translateY(-6px); box-shadow: 8px 8px 0 var(--ink); }
+  .tier.featured {
+    background: var(--ink);
+    color: var(--bone);
+  }
+  .tier.featured::before {
+    content: "MOST BACKED";
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: var(--volt);
+    color: var(--ink);
+    padding: 4px 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+  }
+  .tier .price {
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .tier .price sup { font-size: 20px; vertical-align: top; opacity: 0.6; margin-right: 4px; }
+  .tier h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 16px 0 8px;
+  }
+  .tier .tier-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 24px;
+  }
+  .tier ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .tier ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(10,22,40,0.08);
+    padding-left: 20px;
+    position: relative;
+  }
+  .tier.featured ul li { border-bottom-color: rgba(244,239,230,0.15); }
+  .tier ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--blood);
+  }
+  .tier.featured ul li::before { color: var(--volt); }
+  .tier button {
+    margin-top: auto;
+    background: var(--ink);
+    color: var(--bone);
+    border: none;
+    padding: 14px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .tier.featured button {
+    background: var(--volt);
+    color: var(--ink);
+  }
+
+  /* ============ FOUNDER ============ */
+  .founder-chapter {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 120px 40px;
+  }
+  .founder-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .founder-chapter .chapter-label { color: var(--volt); }
+  .founder-chapter .chapter-label::before { background: var(--volt); }
+  .founder-card {
+    background: var(--bone);
+    color: var(--ink);
+    padding: 40px;
+    position: relative;
+  }
+  .founder-avatar {
+    width: 120px;
+    height: 120px;
+    background: var(--ink);
+    color: var(--volt);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .founder-avatar::after {
+    content: "";
+    position: absolute;
+    inset: -8px;
+    border: 1px dashed var(--ink);
+    opacity: 0.3;
+  }
+  .founder-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .founder-card .founder-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(10,22,40,0.6);
+  }
+  .founder-quote {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 28px;
+    line-height: 1.4;
+    position: relative;
+    padding-left: 40px;
+  }
+  .founder-quote::before {
+    content: "\201C";
+    position: absolute;
+    top: -40px;
+    left: 0;
+    font-size: 120px;
+    color: var(--volt);
+    font-family: 'Fraunces', serif;
+    line-height: 1;
+  }
+  .founder-quote cite {
+    display: block;
+    margin-top: 24px;
+    font-style: normal;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--volt);
+  }
+
+  /* ============ FAQ ============ */
+  .faq-chapter { padding: 120px 40px; }
+  .faq-inner { max-width: 900px; margin: 0 auto; }
+  .faq-item {
+    border-top: 1px solid var(--ink);
+    padding: 24px 0;
+  }
+  .faq-item:last-child { border-bottom: 1px solid var(--ink); }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary::after {
+    content: "+";
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 24px;
+    transition: transform 0.2s;
+  }
+  .faq-item[open] summary::after { transform: rotate(45deg); }
+  .faq-item p {
+    margin-top: 16px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: rgba(10,22,40,0.8);
+    max-width: 720px;
+  }
+
+  /* ============ FINAL CTA ============ */
+  .final-cta {
+    background: var(--volt);
+    padding: 120px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta h2 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(48px, 8vw, 120px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    max-width: 1100px;
+    margin: 0 auto 32px;
+  }
+  .final-cta h2 em { font-style: italic; font-weight: 400; }
+  .final-cta p {
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    max-width: 600px;
+    margin: 0 auto 40px;
+    line-height: 1.4;
+  }
+  .final-cta .btn-primary {
+    background: var(--ink);
+    color: var(--volt);
+    box-shadow: 6px 6px 0 rgba(10,22,40,0.25);
+    padding: 24px 48px;
+    font-size: 16px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 60px 40px 40px;
+  }
+  footer .footer-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+  }
+  footer .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  footer .footer-logo img { height: 64px; width: auto; }
+  footer .tagline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.5);
+    margin-bottom: 12px;
+  }
+  footer h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 16px;
+  }
+  footer ul { list-style: none; padding: 0; }
+  footer ul li { padding: 6px 0; font-size: 14px; }
+  footer ul li a { color: var(--bone); text-decoration: none; opacity: 0.85; }
+  footer ul li a:hover { color: var(--volt); opacity: 1; }
+  footer .bottom {
+    max-width: 1280px;
+    margin: 48px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid rgba(244,239,230,0.15);
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.5);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 900px) {
+    .hero-inner, .market-inner, .founder-inner, .problem-grid { grid-template-columns: 1fr; }
+    .fund-card { width: 100%; transform: none; }
+    .rewards-grid { grid-template-columns: 1fr 1fr; }
+    .honest-grid { grid-template-columns: 1fr; }
+    .approach-card.wide, .approach-card.medium, .approach-card.large { grid-column: span 12; }
+    footer .footer-inner { grid-template-columns: 1fr; }
+    .problem-callouts { position: static; }
+    .callout:nth-child(2), .callout:nth-child(3) { margin-left: 0; }
+    section.chapter, .market-chapter, .honest-chapter, .rewards-chapter, .founder-chapter, .faq-chapter, .final-cta { padding: 64px 24px; }
+    .hero { padding: 24px 24px 60px; }
+    .hero-meta { flex-wrap: wrap; gap: 16px; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ============ TEAM ============ */
+  .team-chapter {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 120px 40px;
+  }
+  .team-inner { max-width: 1280px; margin: 0 auto; }
+  .team-chapter .chapter-label { color: var(--volt); }
+  .team-chapter .chapter-label::before { background: var(--volt); }
+  .team-chapter h2.chapter-title { color: var(--bone); }
+  .team-lede {
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-style: italic;
+    line-height: 1.5;
+    color: rgba(244,239,230,0.75);
+    max-width: 720px;
+    margin-bottom: 64px;
+  }
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .team-member {
+    background: var(--ink-2, #102238);
+    border: 1px solid rgba(212,255,58,0.2);
+    padding: 32px 28px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+  .team-member:hover {
+    transform: translateY(-4px);
+    border-color: var(--volt);
+  }
+  .team-member::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 3px;
+    background: var(--volt);
+  }
+  .member-avatar {
+    width: 64px;
+    height: 64px;
+    background: var(--volt);
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 28px;
+    font-weight: 900;
+    margin-bottom: 24px;
+    letter-spacing: -0.02em;
+  }
+  .team-member h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .team-member .member-role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 20px;
+  }
+  .team-member p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: rgba(244,239,230,0.8);
+  }
+
+  /* ============ INSTAGRAM CAROUSEL ============ */
+  .social-chapter {
+    background: var(--bone-2);
+    padding: 120px 40px;
+    position: relative;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .social-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .social-copy h2.chapter-title { margin-bottom: 32px; }
+  .social-copy p {
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+    line-height: 1.55;
+    color: rgba(10,22,40,0.82);
+    margin-bottom: 20px;
+  }
+  .social-handle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+    background: var(--bone);
+    padding: 10px 16px;
+    border: 1px solid var(--ink);
+    margin-top: 12px;
+  }
+  .social-handle::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    background: var(--ink);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.3 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1 .3-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.3-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1-.3 2.2-.4 1.2-.1 1.6-.1 4.8-.1zm0 2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.5.2-.9.4-1.2.8-.4.3-.6.7-.8 1.2-.2.3-.3.9-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.5.4.9.8 1.2.3.4.7.6 1.2.8.3.2.9.3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.5-.2.9-.4 1.2-.8.4-.3.6-.7.8-1.2.2-.3.3-.9.4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.5-.4-.9-.8-1.2-.3-.4-.7-.6-1.2-.8-.3-.2-.9-.3-2-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.4a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8zm0 2a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8zm5.6-2.3a1 1 0 1 1-2.1 0 1 1 0 0 1 2.1 0z'/%3E%3C/svg%3E") no-repeat center / contain;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.3 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1 .3-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.3-1-.4-2.2-.1-1.2-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1-.3 2.2-.4 1.2-.1 1.6-.1 4.8-.1zm0 2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2 .4-.5.2-.9.4-1.2.8-.4.3-.6.7-.8 1.2-.2.3-.3.9-.4 2-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2 .2.5.4.9.8 1.2.3.4.7.6 1.2.8.3.2.9.3 2 .4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2-.4.5-.2.9-.4 1.2-.8.4-.3.6-.7.8-1.2.2-.3.3-.9.4-2 .1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2-.2-.5-.4-.9-.8-1.2-.3-.4-.7-.6-1.2-.8-.3-.2-.9-.3-2-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.4a4.4 4.4 0 1 1 0 8.8 4.4 4.4 0 0 1 0-8.8zm0 2a2.4 2.4 0 1 0 0 4.8 2.4 2.4 0 0 0 0-4.8zm5.6-2.3a1 1 0 1 1-2.1 0 1 1 0 0 1 2.1 0z'/%3E%3C/svg%3E") no-repeat center / contain;
+  }
+
+  /* The phone mockup containing the post */
+  .ig-post {
+    background: #ffffff;
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 12px;
+    max-width: 440px;
+    width: 100%;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    box-shadow: 0 20px 60px rgba(10,22,40,0.15);
+    overflow: hidden;
+  }
+  .ig-header {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .ig-avatar {
+    width: 34px;
+    height: 34px;
+    background: var(--ink);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--volt);
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 14px;
+    margin-right: 10px;
+    border: 2px solid var(--volt);
+  }
+  .ig-user {
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+  }
+  .ig-user .verified {
+    display: inline-block;
+    margin-left: 4px;
+    color: #0095f6;
+    font-size: 12px;
+  }
+  .ig-more {
+    margin-left: auto;
+    color: #262626;
+    font-size: 18px;
+    letter-spacing: 2px;
+  }
+
+  /* Carousel viewport */
+  .ig-carousel {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: #faf8f2;
+  }
+  .ig-slides {
+    display: flex;
+    width: 1100%;
+    height: 100%;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .ig-slide {
+    width: calc(100% / 11);
+    height: 100%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ig-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Carousel navigation arrows */
+  .ig-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(255,255,255,0.85);
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.2s;
+  }
+  .ig-nav:hover { background: #fff; }
+  .ig-nav.prev { left: 10px; }
+  .ig-nav.next { right: 10px; }
+  .ig-nav:disabled { opacity: 0.4; cursor: default; }
+  .ig-nav svg { width: 16px; height: 16px; color: #262626; }
+
+  /* Slide dots */
+  .ig-dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 4px;
+    z-index: 2;
+  }
+  .ig-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.55);
+    transition: background 0.2s;
+  }
+  .ig-dot.active { background: #0095f6; }
+
+  /* Actions + caption */
+  .ig-actions {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px 6px;
+    gap: 12px;
+    font-size: 24px;
+    color: #262626;
+  }
+  .ig-actions .spacer { flex: 1; }
+  .ig-likes {
+    padding: 2px 14px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #262626;
+  }
+  .ig-caption {
+    padding: 4px 14px 10px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #262626;
+  }
+  .ig-caption .handle {
+    font-weight: 600;
+    margin-right: 6px;
+  }
+  .ig-caption .tags {
+    color: #00376b;
+    margin-top: 4px;
+    display: block;
+  }
+  .ig-time {
+    padding: 0 14px 12px;
+    font-size: 10px;
+    color: #8e8e8e;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 900px) {
+    .team-grid { grid-template-columns: 1fr 1fr; }
+    .social-inner { grid-template-columns: 1fr; }
+    .social-chapter { padding: 64px 24px; }
+    .team-chapter { padding: 64px 24px; }
+  }
+
+
+  /* Secondary CTA row for proposal buttons */
+  .hero-proposal-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(244,239,230,0.15);
+  }
+  .hero-proposal-row .proposal-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(244,239,230,0.5);
+    margin-right: 8px;
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--bone);
+    padding: 12px 20px;
+    border: 1px solid rgba(244,239,230,0.3);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-ghost:hover {
+    border-color: var(--volt);
+    color: var(--volt);
+  }
+  .btn-ghost svg { width: 14px; height: 14px; }
+
+  /* ============ MISSION ============ */
+  .mission-chapter {
+    padding: 80px 40px;
+    background: var(--bone);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mission-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .mission-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blood);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+  }
+  .mission-body p {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(24px, 3vw, 36px);
+    font-weight: 400;
+    line-height: 1.35;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+  .mission-body p em {
+    font-style: italic;
+    position: relative;
+  }
+  .mission-body p em::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 2px;
+    width: 100%;
+    height: 10px;
+    background: var(--volt);
+    z-index: -1;
+    opacity: 0.6;
+  }
+  .mission-body .mission-kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--blood);
+    margin-bottom: 20px;
+  }
+
+  /* ============ REFERENCES ============ */
+  .references-chapter {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 100px 40px;
+  }
+  .references-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .references-chapter .chapter-label { color: var(--volt); }
+  .references-chapter .chapter-label::before { background: var(--volt); }
+  .references-chapter h2.chapter-title {
+    color: var(--bone);
+    font-size: clamp(36px, 5vw, 56px);
+    margin-bottom: 24px;
+  }
+  .references-intro {
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-style: italic;
+    color: rgba(244,239,230,0.65);
+    max-width: 700px;
+    margin-bottom: 48px;
+  }
+  .references-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 48px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: ref;
+  }
+  .references-list li {
+    padding: 20px 0 20px 44px;
+    border-top: 1px solid rgba(244,239,230,0.15);
+    position: relative;
+    counter-increment: ref;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(244,239,230,0.85);
+  }
+  .references-list li::before {
+    content: counter(ref, decimal-leading-zero);
+    position: absolute;
+    left: 0;
+    top: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--volt);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+  }
+  .references-list li a {
+    color: var(--volt);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(212,255,58,0.3);
+    transition: border-color 0.2s;
+    word-break: break-word;
+  }
+  .references-list li a:hover { border-color: var(--volt); }
+  .references-list .author { font-weight: 600; color: var(--bone); }
+  .references-list .title { font-style: italic; }
+
+  @media (max-width: 900px) {
+    .mission-inner { grid-template-columns: 1fr; gap: 20px; }
+    .mission-tag { writing-mode: horizontal-tb; transform: none; }
+    .references-list { grid-template-columns: 1fr; gap: 0; }
+    .references-chapter, .mission-chapter { padding: 64px 24px; }
+  }
+
+
+  /* ============ INFOGRAPHIC ============ */
+  .infographic-chapter {
+    background: var(--bone);
+    padding: 120px 40px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .infographic-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .infographic-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: end;
+    margin-bottom: 56px;
+  }
+  .infographic-header h2.chapter-title { margin-bottom: 0; }
+  .infographic-header p {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: rgba(10,22,40,0.78);
+  }
+  .infographic-frame {
+    background: var(--ink);
+    padding: 32px;
+    position: relative;
+    text-align: center;
+  }
+  .infographic-frame::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 1px dashed rgba(10,22,40,0.2);
+    z-index: -1;
+  }
+  .infographic-frame img {
+    max-width: 100%;
+    max-height: 1100px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    box-shadow: 0 30px 80px rgba(10,22,40,0.4);
+  }
+  .infographic-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--rule);
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .infographic-meta .credit {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(10,22,40,0.55);
+  }
+  .infographic-meta .credit strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .btn-download {
+    background: var(--ink);
+    color: var(--bone);
+    padding: 16px 24px;
+    border: none;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s ease;
+  }
+  .btn-download:hover {
+    background: var(--volt);
+    color: var(--ink);
+  }
+  .btn-download svg { width: 16px; height: 16px; }
+
+  @media (max-width: 900px) {
+    .infographic-header { grid-template-columns: 1fr; gap: 24px; align-items: start; }
+    .infographic-chapter { padding: 64px 24px; }
+    .infographic-frame { padding: 16px; }
+    .infographic-meta { flex-direction: column; align-items: flex-start; }
+  }
+
+</style>
+</head>
+<body>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <span><span class="dot"></span>LIVE CAMPAIGN — 18 DAYS REMAINING</span>
+    <span><span class="dot"></span>$5.68B SPORTS ANALYTICS MARKET — 2025</span>
+    <span><span class="dot"></span>PROJECTED $23B BY 2033</span>
+    <span><span class="dot"></span>742 BACKERS AND COUNTING</span>
+    <span><span class="dot"></span>72% FUNDED</span>
+    <span><span class="dot"></span>LIVE CAMPAIGN — 18 DAYS REMAINING</span>
+    <span><span class="dot"></span>$5.68B SPORTS ANALYTICS MARKET — 2025</span>
+    <span><span class="dot"></span>PROJECTED $23B BY 2033</span>
+    <span><span class="dot"></span>742 BACKERS AND COUNTING</span>
+    <span><span class="dot"></span>72% FUNDED</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-inner">
+    <div class="hero-meta">
+      <div class="hero-logo-nav">
+        <img src="velocity-logo.jpg" alt="Velocity AI" />
+      </div>
+      <div>LAUNCH CAMPAIGN · APRIL 2026</div>
+    </div>
+
+    <div class="hero-main">
+      <span class="hero-label">LIVE CAMPAIGN · AI × SPORTS</span>
+      <h1>
+        The numbers<br />
+        <em>don't lie.</em><br />
+        <span class="underline">Now everyone can read them.</span>
+      </h1>
+      <p class="hero-lede">
+        Velocity AI is the sports analytics platform that puts pro-grade predictive models in the hands of teams, coaches, and athletes at every level. Help us launch the first release.
+      </p>
+      <div class="hero-cta-row">
+        <button class="btn-primary" onclick="document.getElementById('rewards').scrollIntoView()">Back Velocity AI →</button>
+        <button class="btn-secondary" onclick="document.getElementById('story').scrollIntoView()">How It Works</button>
+      </div>
+
+      <div class="hero-proposal-row">
+        <span class="proposal-label">The Formal Proposal •</span>
+        <a class="btn-ghost" href="https://docs.google.com/presentation/d/YOUR_SLIDES_ID_HERE/edit" target="_blank" rel="noopener">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-8 15l-4-4h3V9h2v5h3l-4 4zm7-11V5h1v2h-1z"/><path d="M12 10h-1v4h1v-4z" fill="none"/></svg>
+          View Deck Online
+        </a>
+        <a class="btn-ghost" href="velocity-ai-deck.pptx" download>
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Download .pptx
+        </a>
+      </div>
+    </div>
+
+    <aside class="fund-card">
+      <div class="raised">$<span>72,340</span></div>
+      <div class="goal-label">raised of $100,000 goal</div>
+      <div class="progress"><div class="progress-fill"></div></div>
+      <div class="fund-card-stats">
+        <div>
+          <div class="stat-num">742</div>
+          <div class="stat-label">Backers</div>
+        </div>
+        <div>
+          <div class="stat-num">18</div>
+          <div class="stat-label">Days Left</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</header>
+
+<!-- MISSION STATEMENT -->
+<section class="mission-chapter">
+  <div class="mission-inner">
+    <div class="mission-tag">Our Mission</div>
+    <div class="mission-body">
+      <div class="mission-kicker">Chapter 00 / The Mission</div>
+      <p>
+        To put <em>pro-grade sports analytics</em> in the hands of every coach, athlete, and analyst — not just the franchises who can afford a data-science department. We believe the edge that decides games should be available at every level of the game.
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- CHAPTER 1: PROBLEM -->
+<section class="chapter" id="story">
+  <div class="chapter-label">Chapter 01 / The Premise</div>
+  <h2 class="chapter-title">Every front office on Earth is quietly racing to out-compute the next one.</h2>
+
+  <div class="problem-grid">
+    <div class="problem-body">
+      <p class="problem-lede">
+        A generation ago, pro scouts relied on a radar gun, a stopwatch, and a gut. Today, they're joined by neural networks that crunch thousands of variables per player per game.
+      </p>
+      <p>
+        Artificial intelligence and predictive analytics are rewriting how sports organizations evaluate athletes. Modern teams use <span class="highlight">machine learning models</span> to identify patterns in performance and forecast future results — analyzing datasets that would take a traditional scouting department years to read, let alone interpret.
+      </p>
+      <p>
+        But this advantage has been locked behind enterprise contracts and seven-figure analytics budgets. Velocity AI unlocks it. One platform. Every level of the game. The same <span class="highlight">neural networks, biometric analysis, and video intelligence</span> that power elite franchises — now accessible to any serious team or athlete.
+      </p>
+    </div>
+
+    <div class="problem-callouts">
+      <div class="callout">
+        <div class="num">32<span class="unit">%</span></div>
+        <div class="desc">of AI sports research uses neural networks — the core of Velocity AI's engine</div>
+      </div>
+      <div class="callout">
+        <div class="num">5<span class="unit"> sources</span></div>
+        <div class="desc">of data feed modern models — all unified in one Velocity AI dashboard</div>
+      </div>
+      <div class="callout">
+        <div class="num">4×</div>
+        <div class="desc">projected market growth in eight years — and we're building for it</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 2: MARKET -->
+<section class="market-chapter">
+  <div class="market-inner">
+    <div class="market-intro">
+      <div class="chapter-label">Chapter 02 / The Market</div>
+      <h2 class="chapter-title">A $23 billion industry. A wide-open door.</h2>
+      <p>
+        The global sports analytics market is valued at approximately <strong>$5.68 billion in 2025</strong>, and is projected to exceed <strong>$23 billion by 2033</strong>. Every league, every team, every major broadcaster is hiring data scientists.
+      </p>
+      <p>
+        Yet most of that capability never reaches the athletes and coaches who could benefit from it the most. Velocity AI was built to close that gap — turning enterprise-grade analytics into tools that anyone on a sideline can actually use.
+      </p>
+      <div class="giant-number">4<sup>×</sup></div>
+      <div class="giant-desc">growth in eight years · Source: Grand View Research, 2025</div>
+    </div>
+
+    <div class="chart-card">
+      <div class="fig-label">FIG. 01 / MARKET SIZE · USD BILLIONS</div>
+      <h3>Growth of the global sports analytics market, 2025–2033</h3>
+      <svg class="chart-svg" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="rgba(10,22,40,0.08)" stroke-width="1">
+          <line x1="60" y1="40" x2="480" y2="40"/>
+          <line x1="60" y1="100" x2="480" y2="100"/>
+          <line x1="60" y1="160" x2="480" y2="160"/>
+          <line x1="60" y1="220" x2="480" y2="220"/>
+          <line x1="60" y1="280" x2="480" y2="280"/>
+        </g>
+        <g font-family="JetBrains Mono" font-size="10" fill="rgba(10,22,40,0.5)">
+          <text x="50" y="44" text-anchor="end">$25B</text>
+          <text x="50" y="104" text-anchor="end">$20B</text>
+          <text x="50" y="164" text-anchor="end">$15B</text>
+          <text x="50" y="224" text-anchor="end">$10B</text>
+          <text x="50" y="284" text-anchor="end">$5B</text>
+        </g>
+        <g font-family="JetBrains Mono" font-size="11" fill="rgba(10,22,40,0.7)" font-weight="600">
+          <text x="100" y="315" text-anchor="middle">2025</text>
+          <text x="270" y="315" text-anchor="middle">2030</text>
+          <text x="440" y="315" text-anchor="middle">2033</text>
+        </g>
+        <path d="M 100,278 Q 200,260 270,216 T 440,52 L 440,280 L 100,280 Z" fill="rgba(10,22,40,0.06)"/>
+        <path d="M 100,278 Q 200,260 270,216 T 440,52" stroke="#0a1628" stroke-width="3" fill="none" stroke-linecap="round"/>
+        <circle cx="100" cy="278" r="6" fill="#0a1628"/>
+        <circle cx="270" cy="216" r="6" fill="#0a1628"/>
+        <circle cx="440" cy="52" r="8" fill="#d4ff3a" stroke="#0a1628" stroke-width="2"/>
+        <g font-family="Fraunces" font-weight="600" font-size="13" fill="#0a1628">
+          <text x="100" y="268" text-anchor="middle">$5.68B</text>
+          <text x="270" y="206" text-anchor="middle">$12B</text>
+          <text x="440" y="42" text-anchor="middle">$23B</text>
+        </g>
+      </svg>
+      <p class="mono" style="font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:rgba(10,22,40,0.4); margin-top:24px;">Source: Grand View Research, 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 3: HOW IT WORKS -->
+<section class="chapter approach-chapter">
+  <div class="chapter-label">Chapter 03 / The Platform</div>
+  <h2 class="chapter-title">One platform. Five data streams. <em>Infinite clarity.</em></h2>
+
+  <div class="approach-grid">
+    <div class="approach-card wide">
+      <span class="step-num">01 · THE ENGINE</span>
+      <h3>Neural networks lead the field — and power Velocity AI.</h3>
+      <p>Across peer-reviewed sports analytics research, neural networks are the most commonly deployed AI model (32%), followed by decision trees and random forests (24%), support vector machines (18%), and deep learning models (15%). Velocity AI combines all of them — deployed through a single API, unified under one intuitive interface.</p>
+    </div>
+    <div class="approach-card medium">
+      <span class="step-num">02 · CAREER MODELING</span>
+      <h3>Forecasting careers, not just games.</h3>
+      <p>By analyzing thousands of data points, Velocity AI identifies development trends and estimates potential career outcomes — the same frontier the pros are racing toward.</p>
+    </div>
+
+    <div class="approach-card medium">
+      <span class="step-num">03 · FIVE INPUTS</span>
+      <h3>Every signal, unified.</h3>
+      <p>Performance stats, GPS tracking, biometrics, video analysis, and historical data — all flowing into a single dashboard built for real decisions.</p>
+    </div>
+    <div class="approach-card large">
+      <span class="step-num">04 · BUILT FOR HUMANS</span>
+      <h3>We don't replace your coaches. We arm them.</h3>
+      <p>Velocity AI was designed around a truth the best organizations already know: AI alone doesn't win games. Our tools surface the insights — leadership, team fit, and context stay where they belong, with the people who know the sport. The model talks. The coach decides.</p>
+    </div>
+  </div>
+
+  <div class="data-table-wrap">
+    <h3>Figure 03 · Types of data Velocity AI processes in real time</h3>
+    <table class="data-types">
+      <thead>
+        <tr>
+          <th>Data Type</th>
+          <th>Example</th>
+          <th>Purpose</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Performance Statistics</td><td>Goals, assists, yards</td><td style="font-size:15px;color:rgba(244,239,230,0.9)">Evaluate player productivity</td></tr>
+        <tr><td>Player Tracking</td><td>GPS movement</td><td style="font-size:15px;color:rgba(244,239,230,0.9)">Analyze positioning and speed</td></tr>
+        <tr><td>Biometric</td><td>Heart rate, workload</td><td style="font-size:15px;color:rgba(244,239,230,0.9)">Monitor athlete health</td></tr>
+        <tr><td>Video Analysis</td><td>Computer vision tracking</td><td style="font-size:15px;color:rgba(244,239,230,0.9)">Analyze tactics and gameplay</td></tr>
+        <tr><td>Historical Performance</td><td>Previous seasons</td><td style="font-size:15px;color:rgba(244,239,230,0.9)">Predict future performance</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CHAPTER 4: HONEST -->
+<section class="honest-chapter">
+  <div class="honest-inner">
+    <div class="chapter-label">Chapter 04 / The Honest Part</div>
+    <h2 class="chapter-title">What AI can't do. <em>We'll tell you anyway.</em></h2>
+    <p style="font-family:'Fraunces',serif; font-size:20px; line-height:1.5; max-width:780px; color:rgba(10,22,40,0.75);">
+      No sports analytics tool is magic. Velocity AI is built on honesty about its limits — because that's the only way to build trust with the people using it.
+    </p>
+
+    <div class="honest-grid">
+      <div class="honest-card">
+        <div class="tag">LIMITATION 01</div>
+        <h3>Algorithmic bias</h3>
+        <p>Models trained on incomplete or biased historical data can reinforce existing inequalities. Velocity AI audits its training sets continuously and publishes what it finds.</p>
+      </div>
+      <div class="honest-card">
+        <div class="tag">LIMITATION 02</div>
+        <h3>Overfitting</h3>
+        <p>Algorithms that fit past data too tightly miss future reality. Injuries, coaching changes, and team dynamics don't live in a spreadsheet — and we don't pretend they do.</p>
+      </div>
+      <div class="honest-card">
+        <div class="tag">LIMITATION 03</div>
+        <h3>Intangibles remain intangible</h3>
+        <p>Leadership. Character. Team fit. These are the qualities that win championships, and no model can measure them. Velocity AI supports human judgment — it does not replace it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- INFOGRAPHIC -->
+<section class="infographic-chapter" id="infographic">
+  <div class="infographic-inner">
+    <div class="infographic-header">
+      <div>
+        <div class="chapter-label">Chapter 04.5 / The Snapshot</div>
+        <h2 class="chapter-title">Everything, on <em>one page.</em></h2>
+      </div>
+      <div>
+        <p>The whole pitch — the market, the models, the data, and the human edge — distilled into a single visual reference. Save it, share it, print it.</p>
+      </div>
+    </div>
+
+    <div class="infographic-frame">
+      <a href="velocity-ai-infographic.png" target="_blank" rel="noopener" title="Click to view full size">
+        <img src="velocity-ai-infographic.png" alt="The $23B Scouting Revolution — Velocity AI infographic showing market growth, AI techniques, data sources, and the human edge" />
+      </a>
+    </div>
+
+    <div class="infographic-meta">
+      <div class="credit">
+        Designed by <strong>Carmen</strong>  ·  Built with the Velocity AI team
+      </div>
+      <a class="btn-download" href="velocity-ai-infographic.png" download="velocity-ai-infographic.png">
+        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Download Infographic
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 5: REWARDS -->
+<section class="chapter rewards-chapter" id="rewards">
+  <div class="chapter-label">Chapter 05 / Back the Launch</div>
+  <h2 class="chapter-title">Pick your tier. Get early access. <em>Shape the product.</em></h2>
+
+  <div class="rewards-grid">
+    <div class="tier">
+      <div class="price"><sup>$</sup>25</div>
+      <h3>The Supporter</h3>
+      <div class="tier-sub">Early access · Digital</div>
+      <ul>
+        <li>3-month app subscription at launch</li>
+        <li>Backer-only launch newsletter</li>
+        <li>Name in the credits of v1.0</li>
+      </ul>
+      <button>Back This Tier</button>
+    </div>
+    <div class="tier featured">
+      <div class="price"><sup>$</sup>99</div>
+      <h3>The Athlete</h3>
+      <div class="tier-sub">Annual license + perks</div>
+      <ul>
+        <li>12 months of Velocity AI Pro</li>
+        <li>Priority access to new features</li>
+        <li>Live onboarding session</li>
+        <li>Invite to our private backer community</li>
+      </ul>
+      <button>Back This Tier</button>
+    </div>
+    <div class="tier">
+      <div class="price"><sup>$</sup>299</div>
+      <h3>The Coach</h3>
+      <div class="tier-sub">Team license · Up to 20 athletes</div>
+      <ul>
+        <li>All Athlete tier rewards</li>
+        <li>Team license for 20 seats</li>
+        <li>Custom onboarding for your staff</li>
+        <li>Direct line to our product team</li>
+      </ul>
+      <button>Back This Tier</button>
+    </div>
+    <div class="tier">
+      <div class="price"><sup>$</sup>1,500</div>
+      <h3>The Franchise</h3>
+      <div class="tier-sub">Organization tier · Unlimited</div>
+      <ul>
+        <li>Unlimited team seats for 1 year</li>
+        <li>Logo on the Velocity AI launch page</li>
+        <li>Quarterly strategy calls with founders</li>
+        <li>Early input on our roadmap</li>
+      </ul>
+      <button>Back This Tier</button>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-chapter">
+  <div class="team-inner">
+    <div class="chapter-label">Chapter 06 / The Team</div>
+    <h2 class="chapter-title">Four people. <em>One mission.</em></h2>
+    <p class="team-lede">
+      Velocity AI isn't a solo act — it's a team of builders, strategists, designers, and deadline-wranglers keeping the campaign moving forward.
+    </p>
+
+    <div class="team-grid">
+      <div class="team-member">
+        <div class="member-avatar">T</div>
+        <h3>Tergel</h3>
+        <div class="member-role">Deadline Coordinator</div>
+        <p>Oversees deadlines, tracks team progress, and ensures all tasks are completed on time. Also contributes to social media posts.</p>
+      </div>
+
+      <div class="team-member">
+        <div class="member-avatar">N</div>
+        <h3>Numair</h3>
+        <div class="member-role">Campaign Strategist</div>
+        <p>Leads research and planning, ensures the campaign aligns with the proposal, and contributes to social media posts.</p>
+      </div>
+
+      <div class="team-member">
+        <div class="member-avatar">P</div>
+        <h3>Paul</h3>
+        <div class="member-role">Content Developer &amp; Design</div>
+        <p>Writes and edits campaign materials, and assists with infographic creation.</p>
+      </div>
+
+      <div class="team-member">
+        <div class="member-avatar">C</div>
+        <h3>Carmen</h3>
+        <div class="member-role">Design &amp; Media</div>
+        <p>Creates visual deliverables such as the infographic, logo, and overall design system.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- SOCIAL / INSTAGRAM CAROUSEL -->
+<section class="social-chapter">
+  <div class="social-inner">
+    <div class="social-copy">
+      <div class="chapter-label">Chapter 07 / The Conversation</div>
+      <h2 class="chapter-title">We're also <em>talking about it</em> on socials.</h2>
+      <p>
+        Every fact in our campaign gets its own moment on Instagram. Swipe through the carousel — 10 plainly-explained truths about AI in professional sports, built to circulate long after the campaign ends.
+      </p>
+      <p>
+        Follow along, share what resonates, and help us bring pro-grade analytics to every level of the game.
+      </p>
+      <span class="social-handle">@velocity.ai</span>
+    </div>
+
+    <div class="ig-post">
+      <div class="ig-header">
+        <div class="ig-avatar">V</div>
+        <div class="ig-user">velocity.ai<span class="verified">✓</span></div>
+        <div class="ig-more">⋯</div>
+      </div>
+
+      <div class="ig-carousel">
+        <button class="ig-nav prev" onclick="prevSlide()" aria-label="Previous slide">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M15.4 7.4 14 6l-6 6 6 6 1.4-1.4L10.8 12z"/></svg>
+        </button>
+        <button class="ig-nav next" onclick="nextSlide()" aria-label="Next slide">
+          <svg fill="currentColor" viewBox="0 0 24 24"><path d="M8.6 7.4 10 6l6 6-6 6-1.4-1.4L13.2 12z"/></svg>
+        </button>
+        <div class="ig-slides" id="igSlides">
+        <div class="ig-slide"><img src="carousel-01.jpg" alt="AI-Sports carousel slide 1 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-02.jpg" alt="AI-Sports carousel slide 2 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-03.jpg" alt="AI-Sports carousel slide 3 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-04.jpg" alt="AI-Sports carousel slide 4 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-05.jpg" alt="AI-Sports carousel slide 5 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-06.jpg" alt="AI-Sports carousel slide 6 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-07.jpg" alt="AI-Sports carousel slide 7 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-08.jpg" alt="AI-Sports carousel slide 8 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-09.jpg" alt="AI-Sports carousel slide 9 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-10.jpg" alt="AI-Sports carousel slide 10 of 11" /></div>
+        <div class="ig-slide"><img src="carousel-11.jpg" alt="AI-Sports carousel slide 11 of 11" /></div>
+        </div>
+        <div class="ig-dots" id="igDots">
+          <div class="ig-dot active"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+          <div class="ig-dot"></div>
+        </div>
+      </div>
+
+      <div class="ig-actions">
+        <span>♡</span>
+        <span>💬</span>
+        <span>✈</span>
+        <span class="spacer"></span>
+        <span>🔖</span>
+      </div>
+
+      <div class="ig-likes">2,847 likes</div>
+
+      <div class="ig-caption">
+        <span class="handle">velocity.ai</span>10 things every coach, athlete, and scout should know about AI in professional sports. Swipe through → and save for later.
+        <span class="tags">#sportsanalytics #aiinsports #athletedevelopment #sportsscience</span>
+      </div>
+
+      <div class="ig-time">April 18</div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-chapter">
+  <div class="faq-inner">
+    <div class="chapter-label">Chapter 07 / Frequently Asked</div>
+    <h2 class="chapter-title">Questions, plainly answered.</h2>
+
+    <details class="faq-item">
+      <summary>What exactly is Velocity AI?</summary>
+      <p>A sports analytics platform that combines machine learning, biometric tracking, video analysis, and historical performance data into a single dashboard. Built for teams and athletes at every level — not just the top 1% who can afford enterprise analytics contracts.</p>
+    </details>
+    <details class="faq-item">
+      <summary>When will I get access?</summary>
+      <p>Estimated launch is 90 days after the campaign closes. Digital tier rewards (access credentials, onboarding materials) unlock on launch day. Team and organization tiers receive their onboarding calls within the first 30 days.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Who is this built for?</summary>
+      <p>College and semi-pro teams, high school programs, individual athletes, coaches, scouts, sports journalists, and anyone serious about using data to improve athletic performance. You don't need a stats background — Velocity AI is built to be read, not decoded.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What makes Velocity AI different?</summary>
+      <p>Three things. First, accessibility — pro-grade models at a price real teams can afford. Second, honesty — we publish our model limitations, not just our wins. Third, human-first design — we built the platform to support coaching judgment, not override it.</p>
+    </details>
+    <details class="faq-item">
+      <summary>What happens if you exceed your funding goal?</summary>
+      <p>Stretch goals include: expanding to additional sports (campaign launches with football, basketball, and soccer), a companion mobile app for individual athletes, and open-sourcing our bias-audit framework so the entire industry benefits.</p>
+    </details>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <h2>The edge used to be a secret. <em>Not anymore.</em></h2>
+  <p>Back Velocity AI and help bring pro-grade analytics to every level of the game.</p>
+  <button class="btn-primary" onclick="document.getElementById('rewards').scrollIntoView()">Choose Your Tier →</button>
+</section>
+
+<!-- FOOTER -->
+
+<!-- REFERENCES -->
+<section class="references-chapter">
+  <div class="references-inner">
+    <div class="chapter-label">Chapter 08 / References</div>
+    <h2 class="chapter-title">The research behind the pitch.</h2>
+    <p class="references-intro">
+      Every claim on this page is grounded in peer-reviewed research or recognized industry reporting. Sources are listed below in APA format — click any link to read the original.
+    </p>
+
+    <ol class="references-list">
+      
+      <li>
+        <span class="author">Grand View Research.</span> (2025). <span class="title">Sports analytics market size &amp; share industry report, 2033.</span> <em>Grand View Research.</em>
+        <a href="https://www.grandviewresearch.com/industry-analysis/sports-analytics-market" target="_blank" rel="noopener">grandviewresearch.com/industry-analysis/sports-analytics-market</a>
+      </li>
+      <li>
+        <span class="author">Gent, E.</span> (2018, June 14). <span class="title">How AI is helping sports teams scout star players.</span> <em>NBC News.</em>
+        <a href="https://www.nbcnews.com/mach/science/how-ai-helping-sports-teams-scout-star-players-ncna882516" target="_blank" rel="noopener">nbcnews.com/…/ncna882516</a>
+      </li>
+      <li>
+        <span class="author">Leite, T. V. P. P.</span> (2025). <span class="title">AI-based sports scouting project management</span> (Order No. 32366884). <em>ProQuest One Academic.</em> (3270824007).
+        <a href="https://www.proquest.com/dissertations-theses/ai-based-sports-scouting-project-management/docview/3270824007/se-2" target="_blank" rel="noopener">proquest.com/…/3270824007</a>
+      </li>
+      <li>
+        <span class="author">Bartlett, R.</span> (2006, December 15). <span class="title">Artificial intelligence in sports biomechanics: New dawn or false hope?</span> <em>Journal of Sports Science &amp; Medicine.</em>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3861744/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC3861744</a>
+      </li>
+      <li>
+        <span class="author">Zhou, D.</span> (n.d.). <span class="title">Artificial intelligence in sport: A narrative review of applications, challenges and future trends.</span> <em>Journal of Sports Sciences.</em> Taylor &amp; Francis.
+        <a href="https://www.tandfonline.com/doi/abs/10.1080/02640414.2025.2518694" target="_blank" rel="noopener">tandfonline.com/…/02640414.2025.2518694</a>
+      </li>
+      <li>
+        <span class="author">Hammes, F., Hagg, A., Asteroth, A., &amp; Link, D.</span> (2026, February 22). <span class="title">Artificial intelligence in elite sports — A narrative review of success stories and challenges.</span> <em>Frontiers.</em>
+        <a href="https://www.frontiersin.org/journals/sports-and-active-living/articles/10.3389/fspor.2022.861466/full" target="_blank" rel="noopener">frontiersin.org/…/fspor.2022.861466/full</a>
+      </li>
+      <li>
+        <span class="author">Pietraszewski, P., Terbalyan, A., Roczniok, R., Maszczyk, A., Ornowski, K., Manilewska, D., Kuliś, S., Zając, A., &amp; Golaś, A.</span> (2025, June 27). <span class="title">The role of artificial intelligence in sports analytics: A systematic review and meta-analysis of performance trends.</span> <em>MDPI.</em>
+        <a href="https://www.mdpi.com/2076-3417/15/13/7254" target="_blank" rel="noopener">mdpi.com/2076-3417/15/13/7254</a>
+      </li>
+      <li>
+        <span class="author">Pisaniello, A.</span> (2024, November 6). <span class="title">The game changer: How artificial intelligence is transforming sports.</span> <em>Paradigm.</em>
+        <a href="https://reference-global.com/article/10.2478/gssfj-2024-0006" target="_blank" rel="noopener">reference-global.com/article/10.2478/gssfj-2024-0006</a>
+      </li>
+      <li>
+        <span class="author">Gao, Y.</span> (2025, April 30). <span class="title">The role of artificial intelligence in enhancing sports education and public health in higher education.</span> <em>Frontiers in Public Health.</em>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12075118/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC12075118</a>
+      </li>
+      <li>
+        <span class="author">Xu, T.</span> (2025, February 15). <span class="title">Reshaping the future of sports with artificial intelligence: Challenges and opportunities.</span> <em>ScienceDirect.</em>
+        <a href="https://www.sciencedirect.com/science/article/abs/pii/S0952197624020712" target="_blank" rel="noopener">sciencedirect.com/…/S0952197624020712</a>
+      </li>
+      <li>
+        <span class="author">Mateus, N., Abade, E., Coutinho, D., Gómez, M.-Á., Peñas, C. L., &amp; Sampaio, J.</span> (2024, December 29). <span class="title">Empowering the sports scientist with artificial intelligence in training, performance, and health management.</span> <em>Sensors (Basel).</em>
+        <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC11723022/" target="_blank" rel="noopener">pmc.ncbi.nlm.nih.gov/articles/PMC11723022</a>
+      </li>
+    
+    </ol>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <img src="velocity-logo.jpg" alt="Velocity AI" />
+      </div>
+      <div class="tagline">AI Sports Analytics · Built for every athlete · 2026</div>
+      <p style="margin-top:16px; font-size:14px; line-height:1.6; color:rgba(244,239,230,0.7); max-width:400px;">
+        Velocity AI puts enterprise-grade predictive analytics into the hands of the teams, coaches, and athletes who need it most — balanced by a clear-eyed commitment to the limits of what AI can actually do.
+      </p>
+    </div>
+    <div>
+      <h4>The Platform</h4>
+      <ul>
+        <li><a href="#story">How It Works</a></li>
+        <li><a href="#rewards">Back the Launch</a></li>
+        <li><a href="#">Methodology</a></li>
+        <li><a href="#">Bias Audits</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Launch Updates</a></li>
+        <li><a href="#">Press Kit</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Newsletter</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="bottom">
+    <div>© 2026 Velocity AI · Tergel · Numair · Paul · Carmen</div>
+    <div>Campaign active · 18 days remaining</div>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.chapter, .market-chapter, .honest-chapter, .rewards-chapter, .team-chapter, .social-chapter, .infographic-chapter').forEach(el => {
+    el.classList.add('reveal');
+    observer.observe(el);
+  });
+</script>
+
+
+<script>
+  // Instagram carousel logic
+  let currentSlide = 0;
+  const totalSlides = 11;
+  const slidesEl = document.getElementById('igSlides');
+  const dots = document.querySelectorAll('#igDots .ig-dot');
+  const prevBtn = document.querySelector('.ig-nav.prev');
+  const nextBtn = document.querySelector('.ig-nav.next');
+
+  function updateCarousel() {
+    const offset = -(currentSlide * (100 / totalSlides));
+    slidesEl.style.transform = `translateX(${offset}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+    prevBtn.disabled = currentSlide === 0;
+    nextBtn.disabled = currentSlide === totalSlides - 1;
+  }
+  function nextSlide() {
+    if (currentSlide < totalSlides - 1) { currentSlide++; updateCarousel(); }
+  }
+  function prevSlide() {
+    if (currentSlide > 0) { currentSlide--; updateCarousel(); }
+  }
+  updateCarousel();
+</script>
+
+</body>
+</html>
